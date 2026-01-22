@@ -5,7 +5,7 @@ node {
 
     stage('Git Checkout') {
         git branch: 'main',
-            url: 'https://github.com/gelazog/DevOps-Project-Build.git'
+            url: 'https://github.com/khalifemubin/devops-project-one.git'
     }
 
     stage('Send files to Ansible Server') {
@@ -23,8 +23,8 @@ node {
             ssh -o StrictHostKeyChecking=no ubuntu@${ansible_server_private_ip} '
             cd /home/ubuntu &&
             docker build -t ${JOB_NAME}:v-${BUILD_ID} . &&
-            docker tag ${JOB_NAME}:v-${BUILD_ID} 0322103737/${JOB_NAME}:v-${BUILD_ID} &&
-            docker tag ${JOB_NAME}:v-${BUILD_ID} 0322103737/${JOB_NAME}:latest
+            docker tag ${JOB_NAME}:v-${BUILD_ID} khalifemubin/${JOB_NAME}:v-${BUILD_ID} &&
+            docker tag ${JOB_NAME}:v-${BUILD_ID} khalifemubin/${JOB_NAME}:latest
             '
             """
         }
@@ -35,9 +35,9 @@ node {
             withCredentials([string(credentialsId: 'dockerhub_passwd1', variable: 'DOCKER_PASS')]) {
                 sh """
                 ssh -o StrictHostKeyChecking=no ubuntu@${ansible_server_private_ip} '
-                docker login -u 0322103737 -p ${DOCKER_PASS} &&
-                docker push 0322103737/${JOB_NAME}:v-${BUILD_ID} &&
-                docker push 0322103737/${JOB_NAME}:latest
+                docker login -u khalifemubin -p ${DOCKER_PASS} &&
+                docker push khalifemubin/${JOB_NAME}:v-${BUILD_ID} &&
+                docker push khalifemubin/${JOB_NAME}:latest
                 '
                 """
             }
