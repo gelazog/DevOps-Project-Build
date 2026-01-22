@@ -1,0 +1,17 @@
+- hosts: webnode
+  become: true
+  tasks:
+
+  - name: Delete old deployment
+    command: kubectl delete -f /home/ubuntu/Deployment.yml
+    ignore_errors: true
+
+  - name: Delete old service
+    command: kubectl delete -f /home/ubuntu/Service.yml
+    ignore_errors: true
+
+  - name: Create new deployment
+    command: kubectl apply -f /home/ubuntu/Deployment.yml
+
+  - name: Create new service
+    command: kubectl apply -f /home/ubuntu/Service.yml
