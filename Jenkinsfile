@@ -1,5 +1,5 @@
 def ansible_server_private_ip = "172.31.13.197"
-def kubernetes_server_private_ip = "172.31.14.147"
+def kubernetes_server_private_ip = "172.31.3.209"
 
 node {
 
@@ -37,20 +37,10 @@ node {
                 ssh -o StrictHostKeyChecking=no ubuntu@${ansible_server_private_ip} '
                 docker login -u 0322103737 -p ${DOCKER_PASS} &&
                 docker push 0322103737/${JOB_NAME}:v-${BUILD_ID} &&
-                docker push 0322103737/${JOB_NAME}:latest &&
-                docker rmi 0322103737/${JOB_NAME}:v-${BUILD_ID} 0322103737/${JOB_NAME}:latest ${JOB_NAME}:v-${BUILD_ID}
+                docker push 0322103737/${JOB_NAME}:latest
                 '
                 """
             }
-        }
-    }
-
-    stage('Send files to Kubernetes Server') {
-        sshagent(['kubernetes-server']) {
-            sh """
-            scp -o StrictHostKeyChecking=no -r * \
-            ubuntu@${kubernetes_server_private_ip}:/home/ubuntu/
-            """
         }
     }
 
@@ -59,7 +49,6 @@ node {
             sh """
             ssh -o StrictHostKeyChecking=no ubuntu@${ansible_server_private_ip} '
             cd /home/ubuntu &&
-            ansible -m ping webnode &&
             ansible-playbook deploy.yml
             '
             """

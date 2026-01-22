@@ -14,5 +14,4 @@ RUN unzip -o 2121_wave_cafe.zip && \
     rm -rf 2121_wave_cafe 2121_wave_cafe.zip
 
 EXPOSE 80
-
 CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
