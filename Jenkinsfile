@@ -23,8 +23,8 @@ node {
             ssh -o StrictHostKeyChecking=no ubuntu@${ansible_server_private_ip} '
             cd /home/ubuntu &&
             docker build -t ${JOB_NAME}:v-${BUILD_ID} . &&
-            docker tag ${JOB_NAME}:v-${BUILD_ID} kubemubin/${JOB_NAME}:v-${BUILD_ID} &&
-            docker tag ${JOB_NAME}:v-${BUILD_ID} kubemubin/${JOB_NAME}:latest
+            docker tag ${JOB_NAME}:v-${BUILD_ID} 0322103737/${JOB_NAME}:v-${BUILD_ID} &&
+            docker tag ${JOB_NAME}:v-${BUILD_ID} 0322103737/${JOB_NAME}:latest
             '
             """
         }
@@ -35,10 +35,10 @@ node {
             withCredentials([string(credentialsId: 'dockerhub_passwd1', variable: 'DOCKER_PASS')]) {
                 sh """
                 ssh -o StrictHostKeyChecking=no ubuntu@${ansible_server_private_ip} '
-                docker login -u kubemubin -p ${DOCKER_PASS} &&
-                docker push kubemubin/${JOB_NAME}:v-${BUILD_ID} &&
-                docker push kubemubin/${JOB_NAME}:latest &&
-                docker rmi kubemubin/${JOB_NAME}:v-${BUILD_ID} kubemubin/${JOB_NAME}:latest ${JOB_NAME}:v-${BUILD_ID}
+                docker login -u 0322103737 -p ${DOCKER_PASS} &&
+                docker push 0322103737/${JOB_NAME}:v-${BUILD_ID} &&
+                docker push 0322103737/${JOB_NAME}:latest &&
+                docker rmi 0322103737/${JOB_NAME}:v-${BUILD_ID} 0322103737/${JOB_NAME}:latest ${JOB_NAME}:v-${BUILD_ID}
                 '
                 """
             }
